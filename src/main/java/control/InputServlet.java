@@ -1,8 +1,8 @@
 package control;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -39,30 +39,18 @@ public class InputServlet extends HttpServlet {
 		}
 		String hobbyStr = "【趣味】" + request.getParameter("hobby");
 
-		// レスポンスのコンテンツタイプおよびエンコーディング方式を指定
-		response.setContentType("text/html; charset=UTF-8");
+		// リクエストスコープへのデータ格納
+		request.setAttribute("name", nameStr);
+		request.setAttribute("password", passwordStr);
+		request.setAttribute("gender", genderStr);
+		request.setAttribute("food", foodStr);
+		request.setAttribute("hobby", hobbyStr);
+		
+		// 転送オブジェクトを取得
+		RequestDispatcher dispatcher = request.getRequestDispatcher("output-servlet");
 
-		// レスポンス書き出し用オブジェクトの取得
-		PrintWriter out = response.getWriter();
-
-		//レスポンスの書き出し
-		out.println("<!DOCTYPE html>                                 ");
-		out.println("<html>                                          ");
-		out.println("<head>                                          ");
-		out.println("<meta charset=\"UTF-8\">                        ");
-		out.println("<title>入力内容</title>                         ");
-		out.println("<link rel=\"stylesheet\" href=\"style.css\">    ");
-		out.println("</head>                                         ");
-		out.println("<body>                                          ");
-		out.println("    <h2>入力内容</h2>                           ");
-		out.println("    " + nameStr + "<br><br>                     ");
-		out.println("    " + passwordStr + "<br><br>                 ");
-		out.println("    " + genderStr + "<br><br>                   ");
-		out.println("    " + foodStr + "<br><br>                     ");
-		out.println("    " + hobbyStr + "<br><br>                    ");
-		out.println("<br><a href=\"input.html\">入力フォームへ</a>     ");
-		out.println("</body>                                         ");
-		out.println("</html>                                         ");
+		// 転送
+		dispatcher.forward(request, response);
 	}
 
 }

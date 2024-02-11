@@ -1,6 +1,8 @@
 package control;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -39,15 +41,19 @@ public class InputServlet extends HttpServlet {
 		}
 		String hobbyStr = "【趣味】" + request.getParameter("hobby");
 
-		// リクエストスコープへのデータ格納
-		request.setAttribute("name", nameStr);
-		request.setAttribute("password", passwordStr);
-		request.setAttribute("gender", genderStr);
-		request.setAttribute("food", foodStr);
-		request.setAttribute("hobby", hobbyStr);
+		// リストに格納
+		List<String> infoList = new ArrayList<String>();
+		infoList.add(nameStr);
+		infoList.add(passwordStr);
+		infoList.add(genderStr);
+		infoList.add(foodStr);
+		infoList.add(hobbyStr);
+		
+		// リクエストスコープへのデータ格納（リストデータの格納）
+		request.setAttribute("infoList", infoList);
 		
 		// 転送オブジェクトを取得
-		RequestDispatcher dispatcher = request.getRequestDispatcher("output-servlet");
+		RequestDispatcher dispatcher = request.getRequestDispatcher("output.jsp");
 
 		// 転送
 		dispatcher.forward(request, response);
